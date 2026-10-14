@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette Widget</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      background: transparent !important;
+      background-color: transparent !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+    }
+    .palette-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #202020;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      border: 1px solid #2f2f2f;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }
+    .color-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      flex-shrink: 0;
+    }
+    .color-dot:hover {
+      transform: scale(1.15);
+      border-color: #ffffff;
+    }
+    .color-dot:active {
+      transform: scale(0.92);
+    }
+    #color-1 { background-color: #E8EAF6; }
+    #color-2 { background-color: #C5CAE9; }
+    #color-3 { background-color: #9FA8DA; }
+    #color-4 { background-color: #7986CB; }
+    #color-5 { background-color: #5C6BC0; }
+    #toast {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9FA8DA;
+      height: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    #toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="palette-container">
+    <div class="color-dot" id="color-1" title="#E8EAF6" onclick="copyColor('#E8EAF6')"></div>
+    <div class="color-dot" id="color-2" title="#C5CAE9" onclick="copyColor('#C5CAE9')"></div>
+    <div class="color-dot" id="color-3" title="#9FA8DA" onclick="copyColor('#9FA8DA')"></div>
+    <div class="color-dot" id="color-4" title="#7986CB" onclick="copyColor('#7986CB')"></div>
+    <div class="color-dot" id="color-5" title="#5C6BC0" onclick="copyColor('#5C6BC0')"></div>
+  </div>
+
+  <div id="toast">Copiado al portapapeles</div>
+
+  <script>
+    function copyColor(hex) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(hex).then(() => showToast(hex));
+      } else {
+        const input = document.createElement('input');
+        input.value = hex;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showToast(hex);
+      }
+    }
+
+    function showToast(hex) {
+      const toast = document.getElementById('toast');
+      toast.textContent = `Copiado: ${hex}`;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1400);
+    }
+  </script>
+
+</body>
+</html>
